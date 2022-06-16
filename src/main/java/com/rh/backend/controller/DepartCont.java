@@ -1,5 +1,6 @@
 package com.rh.backend.controller;
 import java.util.List;
+import java.util.Optional;
 
 import com.rh.backend.model.Departement;
 import com.rh.backend.repo.DepartementRepo;
@@ -29,6 +30,11 @@ public class DepartCont {
     @GetMapping("")
     List<Departement> index(){
         return departementRepo.findAll();
+    }
+
+    @GetMapping("/{id}")
+    Optional<Departement> finfById(@PathVariable String id){
+        return departementRepo.findById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

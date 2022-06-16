@@ -1,6 +1,7 @@
 package com.rh.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.rh.backend.model.Employee;
 import com.rh.backend.repo.EmployerRepo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,19 +39,23 @@ public class EmployeeCont {
     List<Employee> index(){
         return employeeRepo.findAll();
     }
+    @GetMapping("/{id}")
+    Optional<Employee> finfById(@PathVariable String id){
+        return employeeRepo.findById(id);
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public Employee create(@RequestParam(name = "file") MultipartFile[] files,
-                           @RequestParam String departementId,
-                           @RequestParam String nom,
-                           @RequestParam String prenom,
-                           @RequestParam String tel,
-                           @RequestParam String email,
-                           @RequestParam String adresse,
-                           @RequestParam String motDePasse,
-                           @RequestParam String CIN,
-                           @RequestParam String etat
+    public Employee create(@RequestPart(name = "file")  MultipartFile[] files,
+                           @RequestPart(required = false) String departementId,
+                           @RequestPart(required = false) String nom,
+                           @RequestPart(required = false) String prenom,
+                           @RequestPart(required = false) String tel,
+                           @RequestPart(required = false) String email,
+                           @RequestPart(required = false) String adresse,
+                           @RequestPart(required = false) String motDePasse,
+                           @RequestPart(required = false) String CIN,
+                           @RequestPart(required = false) String etat
                         ) {
         for (MultipartFile file : files) {
             try {
