@@ -37,6 +37,7 @@ public class EmployeeCont {
 
     private String imageUrl;
     private String cvUrl;
+   // private String vidUrl;
 
     @GetMapping("")
     List<Employee> index(){
@@ -51,7 +52,8 @@ public class EmployeeCont {
     @PostMapping("")
     public Employee create(@RequestPart(name = "image")  MultipartFile[] files,
                            @RequestPart(name = "cv")  MultipartFile[] cv, 
-                           @RequestPart(required = false) String departementId,
+                       //  @RequestPart(name = "vid")  MultipartFile[] vid, 
+                           @RequestPart String departementId,
                            @RequestPart(required = false) String nom,
                            @RequestPart(required = false) String prenom,
                            @RequestPart(required = false) String tel,
@@ -80,6 +82,15 @@ public class EmployeeCont {
                 System.out.println("no");
             }
         }
+        // for (MultipartFile v : vid) {
+        //     try {
+        //         String fileName = imageService.save(v);
+        //         this.vidUrl = imageService.getImageUrl(fileName);
+
+        //     } catch (Exception e) {
+        //         System.out.println("no");
+        //     }
+        // }
    
 
         Employee employee = new Employee();

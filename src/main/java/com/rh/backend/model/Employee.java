@@ -24,4 +24,6 @@ public class Employee {
     
     private String imageUrl;
     private String cvUrl;
+    private String vidUrl;
+
 }

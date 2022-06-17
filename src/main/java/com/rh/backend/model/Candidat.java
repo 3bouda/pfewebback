@@ -16,5 +16,5 @@ public class Candidat {
     private String email;
     private String adresse;
 
-    private String CV;
+    private String cvUrl;
 }

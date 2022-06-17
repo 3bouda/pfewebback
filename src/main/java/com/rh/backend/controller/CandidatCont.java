@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.rh.backend.model.Candidat;
 import com.rh.backend.repo.CandidatRepo;
+import com.rh.backend.service.ImageService;
 
 import org.springframework.http.HttpStatus;
 
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -27,6 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CandidatCont {
     @Autowired
     private CandidatRepo candidatRepo;
+
+    
+    @Autowired
+    private ImageService imageService;
+
+    private String cvUrl;
+
 
     @GetMapping("")
     List<Candidat> index(){
@@ -40,8 +50,30 @@ public class CandidatCont {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    Candidat creat(@RequestBody Candidat candidat){
-        return candidatRepo.save(candidat);
+    public Candidat creat(@RequestPart(name = "cv")  MultipartFile[] cv,
+                          @RequestPart(required = false) String nom,
+                          @RequestPart(required = false) String prenom,
+                          @RequestPart(required = false) String tel,
+                          @RequestPart(required = false) String email,
+                          @RequestPart(required = false) String adresse
+                        ) {
+                            for (MultipartFile c : cv) {
+                                try {
+                                    String fileName = imageService.save(c);
+                                    this.cvUrl = imageService.getImageUrl(fileName);
+                    
+                                } catch (Exception e) {
+                                    System.out.println("no");
+                                }
+                            }
+                            Candidat candidat = new Candidat();
+                            candidat.setNom(nom);
+                            candidat.setPrenom(prenom);
+                            candidat.setTel(tel);
+                            candidat.setEmail(email);
+                            candidat.setAdresse(adresse);
+                            candidat.setCvUrl(cvUrl);
+                            return candidatRepo.save(candidat);
     }
     
     @PutMapping("/{id}")
@@ -52,7 +84,7 @@ public class CandidatCont {
         candidatFromDB.setTel(candidat.getTel());
         candidatFromDB.setEmail(candidat.getEmail());
         candidatFromDB.setAdresse(candidat.getAdresse());
-        candidatFromDB.setCV(candidat.getCV());
+        candidatFromDB.setCvUrl(candidat.getCvUrl());
 
         return candidatRepo.save(candidatFromDB);
     }
