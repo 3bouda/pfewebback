@@ -23,4 +23,5 @@ public class Employee {
     private String etat;
     
     private String imageUrl;
+    private String cvUrl;
 }

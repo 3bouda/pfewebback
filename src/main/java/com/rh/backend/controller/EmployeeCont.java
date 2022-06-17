@@ -35,6 +35,9 @@ public class EmployeeCont {
     @Autowired
     private ImageService imageService;
 
+    private String imageUrl;
+    private String cvUrl;
+
     @GetMapping("")
     List<Employee> index(){
         return employeeRepo.findAll();
@@ -46,7 +49,8 @@ public class EmployeeCont {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public Employee create(@RequestPart(name = "file")  MultipartFile[] files,
+    public Employee create(@RequestPart(name = "image")  MultipartFile[] files,
+                           @RequestPart(name = "cv")  MultipartFile[] cv, 
                            @RequestPart(required = false) String departementId,
                            @RequestPart(required = false) String nom,
                            @RequestPart(required = false) String prenom,
@@ -57,29 +61,41 @@ public class EmployeeCont {
                            @RequestPart(required = false) String CIN,
                            @RequestPart(required = false) String etat
                         ) {
+
         for (MultipartFile file : files) {
             try {
                 String fileName = imageService.save(file);
-                String imageUrl = imageService.getImageUrl(fileName);
+                this.imageUrl = imageService.getImageUrl(fileName);
 
-                Employee employee = new Employee();
-
-                employee.setDepartementId(departementId);
-                employee.setNom(nom);
-                employee.setPrenom(prenom);
-                employee.setTel(tel);
-                employee.setEmail(email);
-                employee.setAdresse(adresse);
-                employee.setMotDePasse(motDePasse);
-                employee.setCIN(CIN);
-                employee.setEtat(etat);
-                employee.setImageUrl(imageUrl);
-                return employeeRepo.save(employee);
             } catch (Exception e) {
                 System.out.println("no");
             }
         }
-        return null;
+        for (MultipartFile c : cv) {
+            try {
+                String fileName = imageService.save(c);
+                this.cvUrl = imageService.getImageUrl(fileName);
+
+            } catch (Exception e) {
+                System.out.println("no");
+            }
+        }
+   
+
+        Employee employee = new Employee();
+
+        employee.setDepartementId(departementId);
+        employee.setNom(nom);
+        employee.setPrenom(prenom);
+        employee.setTel(tel);
+        employee.setEmail(email);
+        employee.setAdresse(adresse);
+        employee.setMotDePasse(motDePasse);
+        employee.setCIN(CIN);
+        employee.setEtat(etat);
+        employee.setImageUrl(imageUrl);
+        employee.setCvUrl(cvUrl);
+        return employeeRepo.save(employee);
     }
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/video")

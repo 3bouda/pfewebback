@@ -1,6 +1,7 @@
 package com.rh.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.rh.backend.model.Candidat;
 import com.rh.backend.repo.CandidatRepo;
@@ -30,6 +31,11 @@ public class CandidatCont {
     @GetMapping("")
     List<Candidat> index(){
         return candidatRepo.findAll();
+    }
+
+    @GetMapping("/{id}")
+    Optional<Candidat> finfById(@PathVariable String id){
+        return candidatRepo.findById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
