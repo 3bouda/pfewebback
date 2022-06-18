@@ -108,6 +108,7 @@ public class EmployeeCont {
         employee.setEtat(etat);
         employee.setImageUrl(imageUrl);
         employee.setCvUrl(cvUrl);
+        employee.setPresent(present);
         return employeeRepo.save(employee);
     }
     @ResponseStatus(HttpStatus.CREATED)
