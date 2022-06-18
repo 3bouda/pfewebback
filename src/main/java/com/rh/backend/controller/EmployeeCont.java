@@ -61,7 +61,9 @@ public class EmployeeCont {
                            @RequestPart(required = false) String adresse,
                            @RequestPart(required = false) String motDePasse,
                            @RequestPart(required = false) String CIN,
-                           @RequestPart(required = false) String etat
+                           @RequestPart(required = false) String etat,
+                           @RequestPart(required = false) List<Integer> present
+
                         ) {
 
         for (MultipartFile file : files) {
