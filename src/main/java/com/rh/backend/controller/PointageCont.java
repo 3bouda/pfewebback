@@ -1,7 +1,10 @@
 package com.rh.backend.controller;
 import java.util.List;
+import java.util.Optional;
 
+import com.rh.backend.model.Employee;
 import com.rh.backend.model.Pointage;
+import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.repo.PointageRepo;
 
 import org.springframework.http.HttpStatus;
@@ -26,10 +29,28 @@ public class PointageCont {
     @Autowired
     private PointageRepo pointageRepo;
 
+    @Autowired
+    private EmployerRepo employeeRepo;
+
     @GetMapping("")
     List<Pointage> index(){
         return pointageRepo.findAll();
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/present")
+    Void addpoint(@RequestBody String id){
+        System.out.println(id);
+        String idEmployee = id.substring(1,id.length()-1 );
+        System.out.println(idEmployee);
+
+        Optional<Employee> employee = employeeRepo.findById(idEmployee);
+        List<Integer> presence = employee.get().getPresent();
+        presence.add(0);
+        return null;
+    }
+
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
@@ -53,7 +74,3 @@ public class PointageCont {
         pointageRepo.delete(pointageToDelete);
     }
 }
-//name:                                                                           b6ed7fef-ee79-4270-a237-d4c0ac8232eaPNG
-//https://firebasestorage.googleapis.com/v0/b/facerecognition-b983d.appspot.com/o/0cf88e4d-9143-495b-ae1f-af0da61e3642PNG?alt=media
- //https://firebasestorage.googleapis.com/v0/b/facerecognition-b983d.appspot.com/o/0cf88e4d-9143-495b-ae1f-af0da61e3642PNG?alt=media&token=ff8538ba-2611-4b87-b53b-df20c1ef8b6e
- //https://firebasestorage.googleapis.com/v0/b/facerecognition-b983d.appspot.com/o/77fde773-569e-452c-82d2-ca6c9e85b3b4png?alt=media&token=25380e64-2eed-4759-91dc-78cececb4b24

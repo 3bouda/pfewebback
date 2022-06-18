@@ -1,5 +1,7 @@
 package com.rh.backend.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,5 +27,7 @@ public class Employee {
     private String imageUrl;
     private String cvUrl;
     private String vidUrl;
+
+    public List<Integer> present;
 
 }
