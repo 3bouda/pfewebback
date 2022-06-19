@@ -8,7 +8,8 @@ import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.service.ImageService;
 
 import org.springframework.http.HttpStatus;
-
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeCont {
-
+    @Autowired
+    private JavaMailSender javaMailSender;
+    
     @Autowired
     private EmployerRepo employeeRepo;
 
@@ -109,8 +112,26 @@ public class EmployeeCont {
         employee.setImageUrl(imageUrl);
         employee.setCvUrl(cvUrl);
         employee.setPresent(present);
+
+        sendEmail(email, motDePasse);
         return employeeRepo.save(employee);
     }
+
+    void sendEmail(String email,String motDePasse) {
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+
+        msg.setSubject("Bienvenue dans notre équipe");
+        msg.setText("Nous sommes très heureux de vous avoir dans notre groupe !\n Nous croyons que vous pouvez utiliser vos compétences et vos talents pour aider notre entreprise à atteindre de nouveaux sommets. \n votre mot de passe est:"+motDePasse+"\n Vous pouvez connecté à notre app.\n Bienvenue à bord ! ");
+
+        javaMailSender.send(msg);
+
+    }
+
+
+
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/video")
     public void create(@RequestParam(name = "file") MultipartFile[] files){
