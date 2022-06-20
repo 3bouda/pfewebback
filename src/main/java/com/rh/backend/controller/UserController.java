@@ -23,10 +23,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    private static final String STATUS_CODE_200_MESSAGE = "User LoggedIn with success";
-    private static final String STATUS_CODE_400_MESSAGE = "Bad Request";
+    // private static final String STATUS_CODE_200_MESSAGE = "User LoggedIn with success";
+    // private static final String STATUS_CODE_400_MESSAGE = "Bad Request";
     private static final String STATUS_CODE_404_MESSAGE = "User not found";
-    private static final String STATUS_CODE_500_MESSAGE = "Oops! Something went wrong";
+    // private static final String STATUS_CODE_500_MESSAGE = "Oops! Something went wrong";
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

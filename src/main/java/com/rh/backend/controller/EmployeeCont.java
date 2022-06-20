@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import com.rh.backend.model.Employee;
 import com.rh.backend.payload.ApiRequest.LoginEmployeeRequest;
-import com.rh.backend.payload.ApiRequest.LoginRequest;
 import com.rh.backend.payload.ApiResponse.LoginEmployeeResponse;
-import com.rh.backend.payload.ApiResponse.LoginResponse;
 import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.service.ImageService;
 import com.rh.backend.service.JavaMailSender;
@@ -47,10 +45,10 @@ public class EmployeeCont  {
     private String cvUrl;
    // private String vidUrl;
 
-   private static final String STATUS_CODE_200_MESSAGE = "User LoggedIn with success";
-   private static final String STATUS_CODE_400_MESSAGE = "Bad Request";
+//    private static final String STATUS_CODE_200_MESSAGE = "User LoggedIn with success";
+//    private static final String STATUS_CODE_400_MESSAGE = "Bad Request";
    private static final String STATUS_CODE_404_MESSAGE = "User not found";
-   private static final String STATUS_CODE_500_MESSAGE = "Oops! Something went wrong";
+//    private static final String STATUS_CODE_500_MESSAGE = "Oops! Something went wrong";
 
     @GetMapping("")
     List<Employee> index(){
