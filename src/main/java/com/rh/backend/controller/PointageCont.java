@@ -70,7 +70,7 @@ public class PointageCont {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        String url = "http://localhost:8885/image";
+        String url = "https://d948-196-229-44-156.eu.ngrok.io/image";
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
         response = restTemplate.postForObject(url, requestEntity, String.class);
