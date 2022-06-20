@@ -9,7 +9,6 @@ import com.rh.backend.payload.ApiResponse.LoginEmployeeResponse;
 import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.service.ImageService;
 import com.rh.backend.service.JavaMailSender;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -41,7 +41,11 @@ public class PointageCont {
     private PointageRepo pointageRepo;
 
     @Autowired
-    private EmployerRepo employeeRepo;    
+    private EmployerRepo employeeRepo;
+
+
+    private static final int QUARTER = 15 * 60 * 10000;
+    
 
     @GetMapping("")
     List<Pointage> index(){
