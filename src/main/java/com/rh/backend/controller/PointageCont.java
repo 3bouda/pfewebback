@@ -43,6 +43,8 @@ public class PointageCont {
     @Autowired
     private EmployerRepo employeeRepo;
 
+
+    private static final int QUARTER = 15 * 60 * 10000;
     
 
     @GetMapping("")
@@ -81,6 +83,7 @@ public class PointageCont {
         response = e.getMessage();
     }
 
+
     return new ResponseEntity<>(response, httpStatus);
 }
     
@@ -101,7 +104,6 @@ public class PointageCont {
             List<Integer> presence = employeeFromDB.getPresent();
             presence.add(1);
             employeeFromDB.setPresent(presence);
-           
         }
         // List<Integer> presence = employeeFromDB.getPresent();
         // presence.add(0);

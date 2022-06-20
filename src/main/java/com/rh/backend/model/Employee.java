@@ -21,7 +21,7 @@ public class Employee {
     private String adresse;
    
     private String motDePasse;
-    private String CIN;
+    private String cin;
     private String etat;
     
     private String imageUrl;

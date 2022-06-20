@@ -44,22 +44,27 @@ public class CongeCont {
         conge.setImageEmploye(employe.get().getImageUrl());
         conge.setNomEmploye(employe.get().getNom());
         conge.setPrenomEmploye(employe.get().getPrenom());
-        conge.setPrenomEmploye(employe.get().getPrenom());
         conge.setEmailEmploye(employe.get().getEmail());
         return congeRepo.save(conge);
     }
     
-    @GetMapping("accept/{id}")
+    @GetMapping("{id}/accept")
     Conge accept(@PathVariable String id){
+        
         Conge  congeFromDB = congeRepo.findById(id).orElseThrow(RuntimeException::new);
         congeFromDB.setEtat("accept");
+
+        Optional<Employee> employe = employeeRepo.findById(congeFromDB.getIdemploye());
+        employe.get().setEtat("congé");
+
         return congeRepo.save(congeFromDB);
     }
 
-    @GetMapping("refus/{id}")
+    @GetMapping("{id}/refus")
     Conge refus(@PathVariable String id){
         Conge  congeFromDB = congeRepo.findById(id).orElseThrow(RuntimeException::new);
         congeFromDB.setEtat("refus");
+
         return congeRepo.save(congeFromDB);
     }
 }

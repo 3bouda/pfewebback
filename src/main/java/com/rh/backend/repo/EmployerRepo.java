@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface EmployerRepo extends  MongoRepository<Employee,String> {
 
-    public Optional<Employee> findById(String id);
+    Optional<Employee> findById(String id);
+    Optional <Employee> findByCin (String cin);
     
 }

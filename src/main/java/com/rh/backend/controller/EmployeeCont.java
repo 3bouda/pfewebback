@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.Optional; 
 
 import com.rh.backend.model.Employee;
+import com.rh.backend.payload.ApiRequest.LoginEmployeeRequest;
+import com.rh.backend.payload.ApiRequest.LoginRequest;
+import com.rh.backend.payload.ApiResponse.LoginEmployeeResponse;
+import com.rh.backend.payload.ApiResponse.LoginResponse;
 import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.service.ImageService;
 import com.rh.backend.service.JavaMailSender;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.rh.backend.exceptions.NotFoundException;
+
 
 @CrossOrigin
 @RestController
@@ -40,6 +47,11 @@ public class EmployeeCont  {
     private String cvUrl;
    // private String vidUrl;
 
+   private static final String STATUS_CODE_200_MESSAGE = "User LoggedIn with success";
+   private static final String STATUS_CODE_400_MESSAGE = "Bad Request";
+   private static final String STATUS_CODE_404_MESSAGE = "User not found";
+   private static final String STATUS_CODE_500_MESSAGE = "Oops! Something went wrong";
+
     @GetMapping("")
     List<Employee> index(){
         return employeeRepo.findAll();
@@ -47,6 +59,18 @@ public class EmployeeCont  {
     @GetMapping("/{id}")
     Optional<Employee> finfById(@PathVariable String id){
         return employeeRepo.findById(id);
+    }
+
+    @PostMapping("/EmployeeLogin")
+    public ResponseEntity<?> login(@RequestBody LoginEmployeeRequest loginRequest) {
+        Employee employee = new Employee();
+        employee.setCin(loginRequest.getCin());   
+        employee.setMotDePasse(loginRequest.getMotDePasse());
+
+        Optional<Employee> optionalEmployee = employeeRepo.findByCin(employee.getCin());
+        if ( optionalEmployee.isPresent())
+            return ResponseEntity.ok(new LoginEmployeeResponse(optionalEmployee.get().getId()));
+        else throw new NotFoundException(STATUS_CODE_404_MESSAGE);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -61,8 +85,7 @@ public class EmployeeCont  {
                            @RequestPart(required = false) String email,
                            @RequestPart(required = false) String adresse,
                            @RequestPart(required = false) String motDePasse,
-                           @RequestPart(required = false) String CIN,
-                           @RequestPart(required = false) String etat,
+                           @RequestPart(required = false) String cin,
                            @RequestPart(required = false) List<Integer> present
 
                         ) {
@@ -105,8 +128,7 @@ public class EmployeeCont  {
         employee.setEmail(email);
         employee.setAdresse(adresse);
         employee.setMotDePasse(motDePasse);
-        employee.setCIN(CIN);
-        employee.setEtat(etat);
+        employee.setCin(cin);
         employee.setImageUrl(imageUrl);
         employee.setCvUrl(cvUrl);
         employee.setPresent(present);
@@ -152,7 +174,7 @@ public class EmployeeCont  {
         employeeFromDB.setEmail(employee.getEmail());
         employeeFromDB.setAdresse(employee.getAdresse());
         employeeFromDB.setMotDePasse(employee.getMotDePasse());
-        employeeFromDB.setCIN(employee.getCIN());
+        employeeFromDB.setCin(employee.getCin());
         employeeFromDB.setEtat(employee.getEtat());
 
         return employeeRepo.save(employeeFromDB);

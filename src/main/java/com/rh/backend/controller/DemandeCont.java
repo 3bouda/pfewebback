@@ -35,24 +35,18 @@ public class DemandeCont {
 
     @GetMapping("")
     List<Demande> index(){
-        List<Demande>demandes = demandeRepo.findAll();
-
-        for(Demande demande : demandes){
-            Optional<Employee> employe = employeeRepo.findById(demande.getIdemploye());
-          
-            demande.setImageEmploye(employe.get().getImageUrl());
-            demande.setNomEmploye(employe.get().getNom());
-            demande.setPrenomEmploye(employe.get().getPrenom());
-            demande.setPrenomEmploye(employe.get().getPrenom());
-            demande.setEmailEmploye(employe.get().getEmail());
-            demandeRepo.save(demande);
-        }
         return demandeRepo.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     Demande creat(@RequestBody Demande demande){
+        Optional<Employee> employe = employeeRepo.findById(demande.getIdemploye());
+          
+        demande.setImageEmploye(employe.get().getImageUrl());
+        demande.setNomEmploye(employe.get().getNom());
+        demande.setPrenomEmploye(employe.get().getPrenom());
+        demande.setEmailEmploye(employe.get().getEmail());
         return demandeRepo.save(demande);
     }
 
