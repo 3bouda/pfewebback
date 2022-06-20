@@ -1,9 +1,13 @@
 package com.rh.backend.controller;
 import com.rh.backend.model.Demande;
+import com.rh.backend.model.Employee;
 import com.rh.backend.repo.DemandeRepo;
+import com.rh.backend.repo.EmployerRepo;
+
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,10 +26,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/demande")
 public class DemandeCont {
+
     @Autowired
     private DemandeRepo demandeRepo;
+    
+    @Autowired
+    private EmployerRepo employeeRepo;
+
     @GetMapping("")
     List<Demande> index(){
+        List<Demande>demandes = demandeRepo.findAll();
+
+        for(Demande demande : demandes){
+            Optional<Employee> employe = employeeRepo.findById(demande.getIdemploye());
+          
+            demande.setImageEmploye(employe.get().getImageUrl());
+            demande.setNomEmploye(employe.get().getNom());
+            demande.setPrenomEmploye(employe.get().getPrenom());
+            demande.setPrenomEmploye(employe.get().getPrenom());
+            demande.setEmailEmploye(employe.get().getEmail());
+            demandeRepo.save(demande);
+        }
         return demandeRepo.findAll();
     }
 

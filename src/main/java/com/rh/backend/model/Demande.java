@@ -8,6 +8,13 @@ import lombok.Data;
 public class Demande {
     @Id
     private String id;
+    private String idemploye;
+
+    private String imageEmploye;
+    private String nomEmploye;
+    private String prenomEmploye;
+    private String emailEmploye;
+    
     private String objet;
     private String description;
 }
