@@ -34,23 +34,18 @@ public class CongeCont {
 
     @GetMapping("")
     List<Conge> index(){
-        List<Conge>conges = congeRepo.findAll();
-        
-        for(Conge conge : conges){
-            Optional<Employee> employe = employeeRepo.findById(conge.getIdemploye());
-            conge.setImageEmploye(employe.get().getImageUrl());
-            conge.setNomEmploye(employe.get().getNom());
-            conge.setPrenomEmploye(employe.get().getPrenom());
-            conge.setPrenomEmploye(employe.get().getPrenom());
-            conge.setEmailEmploye(employe.get().getEmail());
-            congeRepo.save(conge);
-        }
         return congeRepo.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED) 
     @PostMapping("")
     Conge creat(@RequestBody Conge conge){
+        Optional<Employee> employe = employeeRepo.findById(conge.getIdemploye());
+        conge.setImageEmploye(employe.get().getImageUrl());
+        conge.setNomEmploye(employe.get().getNom());
+        conge.setPrenomEmploye(employe.get().getPrenom());
+        conge.setPrenomEmploye(employe.get().getPrenom());
+        conge.setEmailEmploye(employe.get().getEmail());
         return congeRepo.save(conge);
     }
     
