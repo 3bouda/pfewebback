@@ -1,23 +1,14 @@
 package com.rh.backend.controller;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.util.Optional; 
 
 import com.rh.backend.model.Employee;
 import com.rh.backend.repo.EmployerRepo;
 import com.rh.backend.service.ImageService;
+import com.rh.backend.service.JavaMailSender;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,10 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin
 @RestController
 @RequestMapping("/employee")
-public class EmployeeCont {
-    @Autowired
-    private JavaMailSender javaMailSender;
-    
+public class EmployeeCont  {
+   
+
     @Autowired
     private EmployerRepo employeeRepo;
 
@@ -120,59 +110,17 @@ public class EmployeeCont {
         employee.setImageUrl(imageUrl);
         employee.setCvUrl(cvUrl);
         employee.setPresent(present);
-
-        sendEmail(email, motDePasse);
+        
+        String objet="Bienvenue dans notre équipe";
+        String emailText="Bonjour,\n\nNous sommes très heureux de vous avoir dans notre groupe !\nNous croyons que vous pouvez utiliser vos compétences et vos talents pour aider notre entreprise à atteindre de nouveaux sommets. \n\n Votre mot de passe est : "+motDePasse+"\n Vous pouvez connecter à notre app.\n Bienvenue à bord ! \n\nCordialement.";
+        
+        JavaMailSender javaMailSender = new  JavaMailSender();
+        javaMailSender.sendEmail(email,objet,emailText);
+        
         return employeeRepo.save(employee);
     }
 
-    void sendEmail(String email,String motDePasse) {
-
-        
-        final String username = "skytek461@gmail.com";
-        final String password = "sdywconvwioflqmc";
-
-        // SimpleMailMessage msg = new SimpleMailMessage();
-        // msg.setFrom("skytek461@gmail.com");
-        // msg.setTo(email);
-
-        // msg.setSubject("Bienvenue dans notre équipe");
-        // msg.setText("Nous sommes très heureux de vous avoir dans notre groupe !\n Nous croyons que vous pouvez utiliser vos compétences et vos talents pour aider notre entreprise à atteindre de nouveaux sommets. \n votre mot de passe est:"+motDePasse+"\n Vous pouvez connecté à notre app.\n Bienvenue à bord ! ");
-
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-
-        prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.starttls.port","587");
-
-        prop.put("mail.smtp.connectiontimeout","5000");
-        prop.put("mail.smtp.timeou","5000");
-        prop.put("mail.smtp.writetimeout","5000");
-
-        Session session = Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-                try {
-
-                    Message message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("skytek461@gmail.com"));
-                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-                    message.setSubject("Bienvenue dans notre équipe");
-                    message.setText("Dear Mail Crawler,"
-                            + "\n\n Please do not spam my email!");
-        
-                    Transport.send(message);
-        
-                    System.out.println("Done");
-        
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                }
-    }
+    
 
 
 
